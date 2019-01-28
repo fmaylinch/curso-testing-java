@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Memento",
+    "minutes": 113,
+    "genre": "THRILLER"
+  },
+  {
+    "id": 2,
+    "name": "Super 8",
+    "minutes": 112,
+    "genre": "THRILLER"
+  }
+]

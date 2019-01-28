@@ -32,12 +32,11 @@ public class MovieControllerSpringOptimizedTest {
     @MockBean
     private MovieService movieService;
 
-    private List<Movie> sampleMovies;
 
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void getMovies() throws Exception {
 
-        sampleMovies = Arrays.asList(
+        List<Movie> sampleMovies = Arrays.asList(
                 new Movie(1, "Memento", 113, Genre.THRILLER),
                 new Movie(2, "Super 8", 112, Genre.THRILLER),
                 new Movie(3, "Matrix", 136, Genre.ACTION)
@@ -45,15 +44,31 @@ public class MovieControllerSpringOptimizedTest {
         Mockito.when(movieService.findAll()).thenReturn(
                 sampleMovies
         );
-    }
-
-    @Test
-    public void getMovies() throws Exception {
 
         String expectedJson = IOUtils.resourceToString(
                 "/json/movies.json", StandardCharsets.UTF_8);
 
         mockMvc.perform(get("/api/movies")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    public void getMoviesByGenre() throws Exception {
+
+        List<Movie> sampleMovies = Arrays.asList(
+                new Movie(1, "Memento", 113, Genre.THRILLER),
+                new Movie(2, "Super 8", 112, Genre.THRILLER)
+        );
+        Mockito.when(movieService.findMoviesByGenre(Genre.THRILLER)).thenReturn(
+                sampleMovies
+        );
+
+        String expectedJson = IOUtils.resourceToString(
+                "/json/movies-thriller.json", StandardCharsets.UTF_8);
+
+        mockMvc.perform(get("/api/movies?genre=THRILLER")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedJson));
