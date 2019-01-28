@@ -4,10 +4,7 @@ import com.platzi.javatests.movies.model.Genre;
 import com.platzi.javatests.movies.model.Movie;
 import com.platzi.javatests.movies.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -26,5 +23,11 @@ public class MovieController {
         } else {
             return movieService.findMoviesByGenre(genre);
         }
+    }
+
+    @GetMapping(path = "/{id}")
+    public Movie getMovieById(@PathVariable int id) {
+
+        return movieService.findById(id);
     }
 }

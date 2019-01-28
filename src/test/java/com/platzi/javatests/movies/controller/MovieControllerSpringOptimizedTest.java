@@ -73,4 +73,20 @@ public class MovieControllerSpringOptimizedTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedJson));
     }
+
+    @Test
+    public void getMovieById() throws Exception {
+
+        Mockito.when(movieService.findById(2)).thenReturn(
+                new Movie(2, "Super 8", 112, Genre.THRILLER)
+        );
+
+        String expectedJson = IOUtils.resourceToString(
+                "/json/movie.json", StandardCharsets.UTF_8);
+
+        mockMvc.perform(get("/api/movies/2")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
+    }
 }
