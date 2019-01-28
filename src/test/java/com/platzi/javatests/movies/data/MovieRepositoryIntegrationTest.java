@@ -31,9 +31,7 @@ public class MovieRepositoryIntegrationTest {
 
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql-scripts/test-data.sql"));
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        movieRepository = new MovieRepositoryJdbc(jdbcTemplate);
+        movieRepository = new MovieRepositoryJdbc(dataSource);
     }
 
     @Test

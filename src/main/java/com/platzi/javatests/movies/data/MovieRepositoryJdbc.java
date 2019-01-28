@@ -2,17 +2,22 @@ package com.platzi.javatests.movies.data;
 
 import com.platzi.javatests.movies.model.Genre;
 import com.platzi.javatests.movies.model.Movie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.Collection;
 
+@Repository
 public class MovieRepositoryJdbc implements MovieRepository {
 
     private JdbcTemplate jdbcTemplate;
 
-    public MovieRepositoryJdbc(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    @Autowired
+    public MovieRepositoryJdbc(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
