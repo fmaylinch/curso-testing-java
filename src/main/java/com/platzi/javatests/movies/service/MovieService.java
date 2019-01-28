@@ -19,6 +19,11 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
+    public Collection<Movie> findAll() {
+
+        return movieRepository.findAll();
+    }
+
     public Collection<Movie> findMoviesByGenre(Genre genre) {
 
         return movieRepository.findAll().stream()
