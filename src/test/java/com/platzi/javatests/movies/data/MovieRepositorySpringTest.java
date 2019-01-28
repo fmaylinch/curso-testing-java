@@ -5,9 +5,13 @@ import com.platzi.javatests.movies.model.Movie;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
 
@@ -19,15 +23,20 @@ import java.util.Collection;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-public class MovieRepositoryIntegrationTest {
+@RunWith(SpringRunner.class)
+@JdbcTest
+public class MovieRepositorySpringTest {
 
     private MovieRepositoryJdbc movieRepository;
+
+    @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Before
     public void setUp() throws Exception {
-
-        dataSource = DataSourceUtil.getDataSourceInMem();
 
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql-scripts/test-data.sql"));
 
@@ -70,7 +79,6 @@ public class MovieRepositoryIntegrationTest {
     public void tearDown() throws Exception {
 
         // Remove H2 files -- https://stackoverflow.com/a/51809831/1121497
-        final Statement s = dataSource.getConnection().createStatement();
-        s.execute("drop all objects delete files"); // "shutdown" is also enough for mem db
+        jdbcTemplate.execute("drop all objects delete files"); // "shutdown" is also enough for mem db
     }
 }
